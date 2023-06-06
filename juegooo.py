@@ -6,8 +6,7 @@ import matplotlib.pyplot as plt
 
 # Función para verificar si se hizo clic en un botón
 def is_button_clicked(button_rect, mouse_pos):
-    #return button_rect.collidepoint(mouse_pos)
-    return
+    return button_rect.collidepoint(mouse_pos)
 
 # Generar el gráfico de la posición de la pelota
 def llamar_grafico():

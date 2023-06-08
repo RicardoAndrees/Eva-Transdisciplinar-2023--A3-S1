@@ -8,17 +8,6 @@ import matplotlib.pyplot as plt
 def is_button_clicked(button_rect, mouse_pos):
     return button_rect.collidepoint(mouse_pos)
 
-# Generar el gráfico de la posición de la pelota
-def llamar_grafico():
-    plt.plot(time_values, position_values)
-    plt.title("Gráfico de posición de la pelota")
-    plt.xlabel("Tiempo")
-    plt.ylabel("Posición de la pelota (cm)")
-    plt.xlim(0, 10)
-    plt.ylim(930, 10)
-    # Mostrar el gráfico en una ventana separada
-    plt.show()
-
 # Inicializar Pygame
 pygame.init()
 
@@ -76,6 +65,26 @@ clock = pygame.time.Clock()
 paused = False
 ball_direction = "up"  # Dirección inicial de la pelota
 
+#Datos lanzamineto vertical
+velocidad= 0         # Velocidad de la pelota
+t = 9.2           # Aceleracion gravedad
+tiAlturaMax = 0   # Tiempo en llegar hasta la altura máxima
+AltMaxima = 0     # Altura máxima alcanzada
+tiempo_total = 0  # Tiempo total del lanzamiento
+
+# Entrada texto con cuadro para ingresar velocidad
+input_rect = pygame.Rect(800, 50, 150, 30)
+input_text = ""
+input_active = False
+font = pygame.font.SysFont(None, 24)
+
+# Funcion para mostrar los datos del lanzamiento
+def Pinta_Datos(velocidad):
+    global tiAlturaMax, AltMaxima, tiempo_total
+    tiAlturaMax = velocidad / g            # Tiempo total hasta alt máx
+    AltMaxima   = (velocidad ** 2) / (2*g) # Altura máx alcanzada
+    tiempo_total= 2 * tiAlturaMax          # tiempo total de lanzamiento
+
 # Variables para el registro de datos de la pelota
 time_values = []
 position_values = []
@@ -95,8 +104,10 @@ while running:
                     if is_button_clicked(button_rect, mouse_pos):
                         if i == 0:
                             paused = not paused
-                        elif i == 1:
-                            llamar_grafico()  # Llama a la función llamar_grafico() cuando se hace clic en el botón 2
+                              # Llama a la función llamar_grafico() cuando se hace clic en el botón 2
+                        elif i == 1:   # se activa la entrada de texto en el cuadro
+                            input_active = True
+                            input_text = ""
                         elif i == 4:
                             ball_x = initial_ball_x
                             ball_y = initial_ball_y
@@ -112,6 +123,22 @@ while running:
                         elif i == 3:
                             ball_speed = 1
 
+        elif event.type == pygame.KEYDOWN:
+            if input_active:
+                if event.key == pygame.K_RETURN:  # se presiona enter para ingresar velocidad
+                    try:
+                        velocidad = float(input_text)
+                        ball_speed = velocidad
+                        Pinta_Datos(velocidad)
+                        input_active = False      # Se desactiva la entrada en el cuadro de texto
+                    except ValueError:
+                        print("Ingrese un número válido, por favor.") 
+                elif event.key == pygame.K_BACKSPACE:
+                    input_text = input_text[:-1]
+                else:
+                    input_text += event.unicode
+
+
     # Movimiento de la pelota
     if not paused:
         if ball_direction == "up":
@@ -121,7 +148,7 @@ while running:
         elif ball_direction == "down":
             ball_y += ball_speed
             if ball_y >= pygame_height - ball_rect.height:  # Cambiar la dirección cuando la pelota alcanza la parte inferior
-                ball_direction = "stop"  # Detiene la pelota al llegar a la parte inferior
+                ball_direction = "up"  # Detiene la pelota al llegar a la parte inferior
 
     # Registro de datos de la pelota
     current_time = ti.time()
@@ -147,6 +174,28 @@ while running:
         text_x = button_x + (button_width - button_text.get_width()) // 2
         text_y = button_y + i * (button_height + button_spacing) + (button_height - button_text.get_height()) // 2
         window.blit(button_text, (text_x, text_y))
+
+    # Mostrar datos lanzamiento vertical a la derecha
+    Pinta_Datos = [
+        f"Velocidad inicial: {velocidad} m/s",
+        f"Tiempo hasta altura máx: {tiAlturaMax:.2f} s",
+        f"Altura máxima alcanzada: {AltMaxima:.2f} m",
+        f"Tiempo total de vuelo: {tiempo_total:.2f} s"
+    ]    
+    texto_velocidad = [f"Velocidad:"]
+
+    for i,text in enumerate(Pinta_Datos):
+        text_surface = font.render(text, True, WHITE)
+        window.blit(text_surface, (700, 315 + i * 30))
+    for i, text in enumerate(texto_velocidad):
+        text_surface = font.render(text, True, WHITE)
+        window.blit(text_surface, (712, 59))
+
+
+    # Se pinta el cuadro de texto para la velocidad
+    pygame.draw.rect(window, WHITE, input_rect, 2)
+    input_surface = font.render(input_text, True, WHITE)
+    window.blit(input_surface, (input_rect.x + 5, input_rect.y +5))    
 
     # Actualizar la ventana
     pygame.display.update()

@@ -88,27 +88,25 @@ def Pinta_Datos(velocidad):
 # Variables para el registro de datos de la pelota
 time_values = []
 position_values = []
+"""
+aqui va la primera parte de la funcion 
+
+que esta en la rama de gerald
 
 
 
 
-
-
-
-
-
-
-
+"""
     # Calcular las coordenadas de los puntos en la gráfica
     if tiempo_total != 0:
         t = 0
-        x = graph_x
-        y = graph_y + graph_height - int((0.5 * g * (t ** 2)) / 2)  # Calcular la posición Y de la pelota en el tiempo t
+        x = grafico_x
+        y = grafico_y + grafico_alto - int((0.5 * g * (t ** 2)) / 2)  # Calcular la posición Y de la pelota en el tiempo t
         points = [(x, y)]
 
         while t <= tiempo_total:
-            x = graph_x + int((graph_width / tiempo_total) * t)
-            y = graph_y + graph_height - int((0.5 * g * (t ** 2)) / 2)
+            x = grafico_x + int((grafico_ancho / tiempo_total) * t)
+            y = grafico_y + grafico_alto - int((0.5 * g * (t ** 2)) / 2)
             points.append((x, y))
             t += 0.1
 # Bucle principal de Pygame

@@ -84,8 +84,19 @@ def Pinta_Datos(velocidad):
     tiAlturaMax = velocidad / g            # Tiempo total hasta alt máx
     AltMaxima   = (velocidad ** 2) / (2*g) # Altura máx alcanzada
     tiempo_total= 2 * tiAlturaMax          # tiempo total de lanzamiento
-
 # Variables para el registro de datos de la pelota
+def Pinta_Grafica():
+    grafico_x = 700 #pasicion x de la grafica 
+    grafico_y = 100 #posicion y de la grafica 
+    grafico_ancho = 250 #ancho de la grafica 
+    grafico_alto = 200 #altura de la grafica 
+    
+    pygame.draw.rect(window, WHITE, (grafico_x, grafico_y, grafico_ancho, grafico_alto), 2)
+    
+    pygame.draw.line(window, WHITE, (grafico_x, grafico_y + grafico_ancho), (grafico_x + grafico_ancho, grafico_y + grafico_alto), 2)
+    
+    pygame.draw.line(window, WHITE, (grafico_x, grafico_y), (grafico_x, grafico_y + grafico_alto), 2)
+    
 time_values = []
 position_values = []
 

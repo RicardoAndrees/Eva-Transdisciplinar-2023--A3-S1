@@ -67,7 +67,7 @@ ball_direction = "up"  # Dirección inicial de la pelota
 
 #Datos lanzamineto vertical
 velocidad= 0         # Velocidad de la pelota
-t = 9.2           # Aceleracion gravedad
+g = 9.2           # Aceleracion gravedad
 tiAlturaMax = 0   # Tiempo en llegar hasta la altura máxima
 AltMaxima = 0     # Altura máxima alcanzada
 tiempo_total = 0  # Tiempo total del lanzamiento
@@ -176,7 +176,7 @@ while running:
         window.blit(button_text, (text_x, text_y))
 
     # Mostrar datos lanzamiento vertical a la derecha
-    Pinta_Datos = [
+    datos = [
         f"Velocidad inicial: {velocidad} m/s",
         f"Tiempo hasta altura máx: {tiAlturaMax:.2f} s",
         f"Altura máxima alcanzada: {AltMaxima:.2f} m",
@@ -184,7 +184,7 @@ while running:
     ]    
     texto_velocidad = [f"Velocidad:"]
 
-    for i,text in enumerate(Pinta_Datos):
+    for i,text in enumerate(datos):
         text_surface = font.render(text, True, WHITE)
         window.blit(text_surface, (700, 315 + i * 30))
     for i, text in enumerate(texto_velocidad):

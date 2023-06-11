@@ -11,7 +11,6 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
-BLACK = (0, 0, 0)
 
 # Tamaño de la pantalla
 tamaño_pantalla = (1200, 599)

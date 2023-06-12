@@ -88,15 +88,18 @@ def Pinta_Datos(velocidad):
 # Variables para el registro de datos de la pelota
 time_values = []
 position_values = []
-"""
-aqui va la primera parte de la funcion 
-
-que esta en la rama de gerald
-
-
-
-
-"""
+def Pinta_Grafica():
+    grafico_x = 700 #pasicion x de la grafica 
+    grafico_y = 100 #posicion y de la grafica 
+    grafico_ancho = 250 #ancho de la grafica 
+    grafico_alto = 200 #altura de la grafica 
+    
+    pygame.draw.rect(window, WHITE, (grafico_x, grafico_y, grafico_ancho, grafico_alto), 2)
+    
+    pygame.draw.line(window, WHITE, (grafico_x, grafico_y + grafico_ancho), (grafico_x + grafico_ancho, grafico_y + grafico_alto), 2)
+    
+    pygame.draw.line(window, WHITE, (grafico_x, grafico_y), (grafico_x, grafico_y + grafico_alto), 2)
+    
     # Calcular las coordenadas de los puntos en la gráfica
     if tiempo_total != 0:
         t = 0
@@ -118,7 +121,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Botón izquierdo del mouse
                 mouse_pos = pygame.mouse.get_pos()
-                for i, color in enumerate(colors):
+                for i, color in enumerate(colores):
                     button_rect = pygame.Rect(button_x, button_y + i * (button_height + button_spacing),
                                               button_width, button_height)
                     if is_button_clicked(button_rect, mouse_pos):

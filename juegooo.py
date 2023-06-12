@@ -185,9 +185,9 @@ while running:
     window.blit(ball_image, (ball_x, ball_y))
 
     # Dibujar los botones en la ventana
-    colors = [RED, GREEN, BLUE, YELLOW, ORANGE]
+    colores = [RED, GREEN, BLUE, YELLOW, ORANGE]
     button_names = ["Botón 1", "Botón 2", "Botón 3", "Botón 4", "Botón 5"]
-    for i, color in enumerate(colors):
+    for i, color in enumerate(colores):
         pygame.draw.rect(window, color,
                          (button_x, button_y + i * (button_height + button_spacing), button_width, button_height))
         button_text = pygame.font.SysFont(None, 24).render(button_names[i], True, WHITE)

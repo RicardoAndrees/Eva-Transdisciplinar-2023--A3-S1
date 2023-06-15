@@ -45,4 +45,4 @@ El programa utiliza las siguientes funcionalidades de Pygame:
 * pinta_trampolin 
 * pinta_cuadro_de_texto
 * pinta_botones
-
+https://drive.google.com/drive/folders/1vqL16PJjxLQJ9CcsJ9HFA57b31hMrEqx?usp=sharing

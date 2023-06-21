@@ -20,8 +20,7 @@ ball_image = pygame.image.load("pelota.png")
 # Cargar la imagen del trampolín
 trampolin_image = pygame.image.load("trampolin.png")
 
-# Cargar la imagen del trampolín
-trampolin_image_2 = pygame.image.load("trampolin_2.png")
+
 
 # Obtener las dimensiones de la pelota
 ball_rect = ball_image.get_rect()
@@ -189,8 +188,7 @@ while running:
 
     # Dibujar el trampolín en la ventana
     window.blit(trampolin_image, (trampolin_x, trampolin_y))
-    window.blit(trampolin_image_2, (trampolin2_x, trampolin2_y))
-    
+
     # Dibujar la pelota en la ventana
     window.blit(ball_image, (ball_x, ball_y))
 

@@ -114,7 +114,7 @@ def Pinta_Grafica():
 
         while t <= tiempo_total:
             x = graph_x + int((graph_width / tiempo_total) * t)
-            y = graph_y + graph_height - int((0.5 * g * (t ** 2)) / 2)
+            y = graph_y + graph_height - int(ball_speed * t - 0.5 * g* (t**2))
             points.append((x, y))
             t += 0.1
 

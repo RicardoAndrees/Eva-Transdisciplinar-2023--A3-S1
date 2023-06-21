@@ -1,6 +1,7 @@
 import pygame
 import time as ti
 import random
+
 # Inicializar Pygame
 pygame.init()
 
@@ -12,7 +13,10 @@ pygame_height = 529
 window = pygame.display.set_mode((pygame_width, pygame_height))
 
 # Cargar la imagen de fondo
-background_image = pygame.image.load("pygame_imagen_fondo.png")
+background_image = pygame.image.load("fondo.png")
+
+# cargar imagen del tema asignado
+tema_imagen = pygame.image.load("tema.png")
 
 # Cargar la imagen de la pelota
 ball_image = pygame.image.load("pelota.png")
@@ -43,7 +47,7 @@ ball_y = initial_ball_y
 
 # Posición del trampolín debajo de la posición inicial de la pelota
 trampolin_x = 260
-trampolin_y = 435
+trampolin_y = 370
 
 # Definir velocidad de la pelota
 ball_speed = 0  # Inicialmente se establece en cero
@@ -66,9 +70,7 @@ button_y = 100
 
 ball_direction = "up"
 
-# Posición del trampolín arriba de la posición final de la pelota
-trampolin2_x = 260
-trampolin2_y = 1
+
 
 # Inicializar el reloj de Pygame
 clock = pygame.time.Clock()
@@ -193,6 +195,9 @@ while running:
 
     # Dibujar el fondo en la ventana
     window.blit(background_image, (0, 0))
+    
+    #se inserta la imagen del tema asignado y se establecen sus cordenadas
+    window.blit(tema_imagen,(190,1))
 
     # Dibujar el trampolín en la ventana
     window.blit(trampolin_image, (trampolin_x, trampolin_y))

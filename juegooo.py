@@ -1,6 +1,6 @@
 import pygame
 import time as ti
-
+import random
 # Inicializar Pygame
 pygame.init()
 
@@ -20,12 +20,21 @@ ball_image = pygame.image.load("pelota.png")
 # Cargar la imagen del trampolín
 trampolin_image = pygame.image.load("trampolin.png")
 
+# Cargar la imagen del atomo
+atomo = pygame.image.load("atomo.png")
 # Obtener las dimensiones de la pelota
 ball_rect = ball_image.get_rect()
 
 # Obtener las dimensiones del trampolín
 trampolin_rect = trampolin_image.get_rect()
 
+
+
+coordenadas_list = []
+for i in range(60):
+    x = random.randint(0, 999)
+    y = random.randint(-599, -1)  # Iniciar puntos fuera de la pantalla en la parte superior
+    coordenadas_list.append([x, y])
 # Posición inicial de la pelota
 initial_ball_x = 300
 initial_ball_y = 380
@@ -46,6 +55,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
+BLACK = (0,0,0)
 
 # Definir dimensiones y posición de los botones
 button_width = 100
@@ -71,7 +81,7 @@ tiempo_total = 0
 
 # Cuadro de texto interactivo para ingresar la velocidad
 input_rect = pygame.Rect(200, 50, 150, 30)
-input_text = ""
+input_text = "Ingrese velocidad: "
 input_active = False
 
 # Fuente de texto
@@ -96,13 +106,13 @@ def Pinta_Grafica():
     graph_height = 200  # Altura de la gráfica
 
     # Dibujar el marco de la gráfica
-    pygame.draw.rect(window, WHITE, (graph_x, graph_y, graph_width, graph_height), 2)
+    pygame.draw.rect(window, BLACK, (graph_x, graph_y, graph_width, graph_height), 5)
 
     # Dibujar el eje X
-    pygame.draw.line(window, WHITE, (graph_x, graph_y + graph_height), (graph_x + graph_width, graph_y + graph_height), 2)
+    pygame.draw.line(window, BLACK, (graph_x, graph_y + graph_height), (graph_x + graph_width, graph_y + graph_height), 5)
 
     # Dibujar el eje Y
-    pygame.draw.line(window, WHITE, (graph_x, graph_y), (graph_x, graph_y + graph_height), 2)
+    pygame.draw.line(window, BLACK, (graph_x, graph_y), (graph_x, graph_y + graph_height), 5)
 
     # Calcular las coordenadas de los puntos en la gráfica
     if tiempo_total != 0:
@@ -119,7 +129,7 @@ def Pinta_Grafica():
             t += 0.1
 
         # Dibujar la curva del lanzamiento vertical
-        pygame.draw.lines(window, GREEN, False, points, 2)
+        pygame.draw.lines(window, WHITE, False, points, 5)
 
 # Bucle principal de Pygame
 running = True
@@ -187,7 +197,7 @@ while running:
     window.blit(ball_image, (ball_x, ball_y))
 
     # Dibujar los botones en la ventana
-    colores = [RED, GREEN, BLUE, YELLOW, ORANGE]
+    colores = [BLACK, BLACK, BLUE, BLACK, BLACK]
     button_names = ["Botón 1", "Velocidad", "Botón 3", "Botón 4", "Botón 5"]
     for i, color in enumerate(colores):
         pygame.draw.rect(window, color, (button_x, button_y + i * (button_height + button_spacing), button_width, button_height))
@@ -198,7 +208,16 @@ while running:
 
     # Dibujar la gráfica del lanzamiento vertical
     Pinta_Grafica()
+    for coord in coordenadas_list:
+        x = coord[0]
+        y = coord[1]
+        pygame.draw.circle(window, BLACK, (x, y), 2)
+        coord[1] += random.randint(1, 5)  # Mover hacia abajo de forma aleatoria
 
+        # Reaparecer los puntos en la parte superior cuando llegan al fondo
+        if coord[1] > 599:
+            coord[1] = random.randint(-599, -1)
+            coord[0] = random.randint(0, 999)
     # Mostrar los datos del lanzamiento vertical en pantalla
     datos = [
         f"Velocidad inicial: {velocidad} m/s",
@@ -221,6 +240,12 @@ while running:
     input_surface = font.render(input_text, True, WHITE)
     window.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
 
+    mouse_pos = pygame.mouse.get_pos()
+    x1 = mouse_pos[0]
+    y1 = mouse_pos[1]
+
+    pygame.draw.rect(window, RED, (x1, y1, 10, 10))
+    pygame.mouse.set_visible(0)
     # Actualizar la ventana
     pygame.display.update()
 

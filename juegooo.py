@@ -88,7 +88,30 @@ def Pinta_Datos(velocidad):
 # Variables para el registro de datos de la pelota
 time_values = []
 position_values = []
+def Pinta_Grafica():
+    grafico_x = 700 #pasicion x de la grafica 
+    grafico_y = 100 #posicion y de la grafica 
+    grafico_ancho = 250 #ancho de la grafica 
+    grafico_alto = 200 #altura de la grafica 
+    
+    pygame.draw.rect(window, WHITE, (grafico_x, grafico_y, grafico_ancho, grafico_alto), 2)
+    
+    pygame.draw.line(window, WHITE, (grafico_x, grafico_y + grafico_ancho), (grafico_x + grafico_ancho, grafico_y + grafico_alto), 2)
+    
+    pygame.draw.line(window, WHITE, (grafico_x, grafico_y), (grafico_x, grafico_y + grafico_alto), 2)
+    
+    # Calcular las coordenadas de los puntos en la gráfica
+    if tiempo_total != 0:
+        t = 0
+        x = grafico_x
+        y = grafico_y + grafico_alto - int((0.5 * g * (t ** 2)) / 2)  # Calcular la posición Y de la pelota en el tiempo t
+        points = [(x, y)]
 
+        while t <= tiempo_total:
+            x = grafico_x + int((grafico_ancho / tiempo_total) * t)
+            y = grafico_y + grafico_alto - int((0.5 * g * (t ** 2)) / 2)
+            points.append((x, y))
+            t += 0.1
 # Bucle principal de Pygame
 running = True
 while running:
@@ -98,7 +121,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:  # Botón izquierdo del mouse
                 mouse_pos = pygame.mouse.get_pos()
-                for i, color in enumerate(colors):
+                for i, color in enumerate(colores):
                     button_rect = pygame.Rect(button_x, button_y + i * (button_height + button_spacing),
                                               button_width, button_height)
                     if is_button_clicked(button_rect, mouse_pos):
@@ -165,9 +188,9 @@ while running:
     window.blit(ball_image, (ball_x, ball_y))
 
     # Dibujar los botones en la ventana
-    colors = [RED, GREEN, BLUE, YELLOW, ORANGE]
+    colores = [RED, GREEN, BLUE, YELLOW, ORANGE]
     button_names = ["Botón 1", "Botón 2", "Botón 3", "Botón 4", "Botón 5"]
-    for i, color in enumerate(colors):
+    for i, color in enumerate(colores):
         pygame.draw.rect(window, color,
                          (button_x, button_y + i * (button_height + button_spacing), button_width, button_height))
         button_text = pygame.font.SysFont(None, 24).render(button_names[i], True, WHITE)

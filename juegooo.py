@@ -13,7 +13,7 @@ YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
 
 # Tamaño de la pantalla
-tamaño_pantalla = (1200, 599)
+tamaño_pantalla = (1001, 599)
 reloj = pygame.time.Clock()
 pantalla = pygame.display.set_mode(tamaño_pantalla)
 
@@ -25,7 +25,7 @@ velocidad_x = 3
 velocidad_y = 3
 
 # Cargar imagen de fondo
-fondo = pygame.image.load("fondo2.jpg")
+fondo = pygame.image.load("pygame_imagen_fondo.png")
 pelota = pygame.image.load("pelota.png")
 cordenadas_list = []
 for i in range(60):

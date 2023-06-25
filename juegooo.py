@@ -31,15 +31,16 @@ ball_rect = ball_image.get_rect()
 # Obtener las dimensiones del trampolín
 trampolin_rect = trampolin_image.get_rect()
 
+#posicion mapa estatico
 H = 0
 
-
-
+#puntitos en el mapa
 coordenadas_list = []
 for i in range(60):
     x = random.randint(0, 999)
     y = random.randint(-599, -1)  # Iniciar puntos fuera de la pantalla en la parte superior
     coordenadas_list.append([x, y])
+    
 # Posición inicial de la pelota
 initial_ball_x = 300
 initial_ball_y = 380
@@ -47,8 +48,8 @@ ball_x = initial_ball_x
 ball_y = initial_ball_y
 
 # Posición del trampolín debajo de la posición inicial de la pelota
-trampolin_x = 260
-trampolin_y = 370
+trampolin_x = 220
+trampolin_y = 450
 
 # Definir velocidad de la pelota
 ball_speed = 0  # Inicialmente se establece en cero
@@ -66,11 +67,11 @@ BLACK = (0,0,0)
 button_width = 100
 button_height = 50
 button_spacing = 10
-button_x = 175
+button_x = 40
 button_y = 100
 
+#direccion del balon
 ball_direction = "up"
-
 
 
 # Inicializar el reloj de Pygame
@@ -87,7 +88,7 @@ AltMaxima = 0
 tiempo_total = 0
 
 # Cuadro de texto interactivo para ingresar la velocidad
-input_rect = pygame.Rect(200, 50, 150, 30)
+input_rect = pygame.Rect(40, 50, 150, 30)
 input_text = "Ingrese velocidad: "
 input_active = False
 
@@ -107,10 +108,10 @@ def Pinta_Datos(velocidad):
 
 # Función para dibujar la gráfica del lanzamiento vertical
 def Pinta_Grafica():
-    graph_x = 700  # Posición X de la gráfica
+    graph_x = 650  # Posición X de la gráfica
     graph_y = 100  # Posición Y de la gráfica
-    graph_width = 250  # Ancho de la gráfica
-    graph_height = 200  # Altura de la gráfica
+    graph_width = 300  # Ancho de la gráfica
+    graph_height = 300  # Altura de la gráfica
 
     # Dibujar el marco de la gráfica
     pygame.draw.rect(window, BLACK, (graph_x, graph_y, graph_width, graph_height), 5)
@@ -243,7 +244,7 @@ while running:
     ]
     for i, text in enumerate(datos):
         text_surface = font.render(text, True, WHITE)
-        window.blit(text_surface, (700, 315 + i * 30))
+        window.blit(text_surface, (650, 425 + i * 30))
     for i, text in enumerate(texto_velocidad):
         text_surface = font.render(text, True, WHITE)
         window.blit(text_surface, (712, 59))

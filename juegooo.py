@@ -5,12 +5,11 @@ import random
 # Inicializar Pygame
 pygame.init()
 
-# Dimensiones de la ventana de Pygame
-pygame_width = 1002
-pygame_height = 529
+#Dimensiones de la ventana de Pygame
+W,D = (1001, 599)
 
-# Crear la ventana de Pygame
-window = pygame.display.set_mode((pygame_width, pygame_height))
+#Crear la ventana de Pygame
+window = pygame.display.set_mode((W,D))
 
 # Cargar la imagen de fondo
 background_image = pygame.image.load("fondo.png")
@@ -31,6 +30,8 @@ ball_rect = ball_image.get_rect()
 
 # Obtener las dimensiones del trampolín
 trampolin_rect = trampolin_image.get_rect()
+
+H = 0
 
 
 
@@ -192,9 +193,12 @@ while running:
             ball_speed = 0
             paused = False
             t = 1
-
-    # Dibujar el fondo en la ventana
-    window.blit(background_image, (0, 0))
+    #Dibujar el fondo en la ventana
+    h_relativa = H % window.get_rect().width
+    window.blit(background_image, (h_relativa - window.get_rect().width, 0))
+    if h_relativa < W:
+        window.blit(background_image,(h_relativa, 0))
+    H -= 1
     
     #se inserta la imagen del tema asignado y se establecen sus cordenadas
     window.blit(tema_imagen,(190,1))

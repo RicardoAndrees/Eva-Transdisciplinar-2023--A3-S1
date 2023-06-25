@@ -5,11 +5,10 @@ import random
 pygame.init()
 
 # Dimensiones de la ventana de Pygame
-pygame_width = 1002
-pygame_height = 529
+W,D = (1001, 599)
 
 # Crear la ventana de Pygame
-window = pygame.display.set_mode((pygame_width, pygame_height))
+window = pygame.display.set_mode((W,D))
 
 # Cargar la imagen de fondo
 background_image = pygame.image.load("pygame_imagen_fondo.png")
@@ -27,7 +26,7 @@ ball_rect = ball_image.get_rect()
 
 # Obtener las dimensiones del trampolín
 trampolin_rect = trampolin_image.get_rect()
-
+H = 0
 
 
 coordenadas_list = []
@@ -188,7 +187,11 @@ while running:
             t = 1
 
     # Dibujar el fondo en la ventana
-    window.blit(background_image, (0, 0))
+    h_relativa = H % window.get_rect().width
+    window.blit(background_image, (h_relativa - window.get_rect().width, 0))
+    if h_relativa < W:
+        window.blit(background_image,(h_relativa, 0))
+    H -= 1
 
     # Dibujar el trampolín en la ventana
     window.blit(trampolin_image, (trampolin_x, trampolin_y))

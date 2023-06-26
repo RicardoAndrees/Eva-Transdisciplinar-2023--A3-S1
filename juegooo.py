@@ -169,13 +169,16 @@ while running:
 
     # Movimiento de la pelota
     if not paused and velocidad != 0:
-        ball_y = initial_ball_y - (velocidad * t - ((g * (t ** 2)) / 2))
-        if ball_y > initial_ball_y:
-            ball_x = initial_ball_x
-            ball_y = initial_ball_y
-            ball_speed = 0
-            paused = False
-            t = 1
+        ball_y -= velocidad
+        velocidad -= g  # Agrega la gravedad al cambio de velocidad
+
+        # Restringe la posición de la pelota dentro de los límites de la ventana
+        if ball_y > 380:
+            ball_y = 380
+            velocidad = 0
+        elif ball_y < 0:
+            ball_y = 0
+            velocidad = 0
 
     # Dibujar el fondo en la ventana
     window.blit(background_image, (0, 0))

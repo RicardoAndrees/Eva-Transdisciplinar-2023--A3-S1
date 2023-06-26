@@ -211,7 +211,7 @@ while running:
             velocidad = 0
         elif ball_y < 0:
             ball_y = 0
-            velocidad = 0
+            velocidad=0
     # Dibujar el fondo en la ventana para hacer el scrouling
     h_relativa = H % window.get_rect().width
     window.blit(background_image, (h_relativa - window.get_rect().width, 0))

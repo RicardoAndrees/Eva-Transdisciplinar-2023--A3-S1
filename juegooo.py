@@ -11,7 +11,10 @@ W,D = (1001, 599)
 window = pygame.display.set_mode((W,D))
 
 # Cargar la imagen de fondo
-background_image = pygame.image.load("pygame_imagen_fondo.png")
+background_image = pygame.image.load("fondo.png")
+
+# cargar imagen del tema asignado
+tema_imagen = pygame.image.load("tema.png")
 
 # Cargar la imagen de la pelota
 ball_image = pygame.image.load("balon1.png")
@@ -68,15 +71,18 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
 BLACK = (0,0,0)
+BLACK = (0,0,0)
 
 # Definir dimensiones y posición de los botones
 button_width = 100
 button_height = 50
 button_spacing = 10
-button_x = 175
+button_x = 40
 button_y = 100
 
+#direccion del balon
 ball_direction = "up"
+
 
 # Inicializar el reloj de Pygame
 clock = pygame.time.Clock()
@@ -112,18 +118,21 @@ def Pinta_Datos(velocidad):
 
 # Función para dibujar la gráfica del lanzamiento vertical
 def Pinta_Grafica():
-    graph_x = 700  # Posición X de la gráfica
+    graph_x = 650  # Posición X de la gráfica
     graph_y = 100  # Posición Y de la gráfica
-    graph_width = 250  # Ancho de la gráfica
-    graph_height = 200  # Altura de la gráfica
+    graph_width = 300  # Ancho de la gráfica
+    graph_height = 300  # Altura de la gráfica
 
     # Dibujar el marco de la gráfica
+    pygame.draw.rect(window, BLACK, (graph_x, graph_y, graph_width, graph_height), 5)
     pygame.draw.rect(window, BLACK, (graph_x, graph_y, graph_width, graph_height), 5)
 
     # Dibujar el eje X
     pygame.draw.line(window, BLACK, (graph_x, graph_y + graph_height), (graph_x + graph_width, graph_y + graph_height), 5)
+    pygame.draw.line(window, BLACK, (graph_x, graph_y + graph_height), (graph_x + graph_width, graph_y + graph_height), 5)
 
     # Dibujar el eje Y
+    pygame.draw.line(window, BLACK, (graph_x, graph_y), (graph_x, graph_y + graph_height), 5)
     pygame.draw.line(window, BLACK, (graph_x, graph_y), (graph_x, graph_y + graph_height), 5)
 
     # Calcular las coordenadas de los puntos en la gráfica
@@ -141,6 +150,7 @@ def Pinta_Grafica():
             t += 0.1
 
         # Dibujar la curva del lanzamiento vertical
+        pygame.draw.lines(window, WHITE, False, points, 5)
         pygame.draw.lines(window, WHITE, False, points, 5)
 
 # Bucle principal de Pygame
@@ -274,7 +284,7 @@ while running:
     ]
     for i, text in enumerate(datos):
         text_surface = font.render(text, True, WHITE)
-        window.blit(text_surface, (700, 315 + i * 30))
+        window.blit(text_surface, (650, 425 + i * 30))
     for i, text in enumerate(texto_velocidad):
         text_surface = font.render(text, True, WHITE)
         window.blit(text_surface, (712, 59))

@@ -1,6 +1,9 @@
 import pygame
 import time as ti
-
+import random
+import matplotlib.pyplot as plt
+import numpy as np
+points = []
 # Inicializar Pygame
 pygame.init()
 
@@ -20,12 +23,19 @@ ball_image = pygame.image.load("pelota.png")
 # Cargar la imagen del trampolín
 trampolin_image = pygame.image.load("trampolin.png")
 
+
 # Obtener las dimensiones de la pelota
 ball_rect = ball_image.get_rect()
 
 # Obtener las dimensiones del trampolín
 trampolin_rect = trampolin_image.get_rect()
 
+
+coordenadas_list = []
+for i in range(60):
+    x = random.randint(0, 999)
+    y = random.randint(-599, -1)  # Iniciar puntos fuera de la pantalla en la parte superior
+    coordenadas_list.append([x, y])
 # Posición inicial de la pelota
 initial_ball_x = 300
 initial_ball_y = 380
@@ -46,13 +56,14 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
+BLACK = (0,0,0)
 
 # Definir dimensiones y posición de los botones
 button_width = 100
-button_height = 50
-button_spacing = 10
-button_x = 175
-button_y = 100
+button_height = 20
+button_spacing = 50
+button_x = 0
+button_y = 0
 
 ball_direction = "up"
 
@@ -64,17 +75,21 @@ paused = False
 
 # Datos del lanzamiento vertical
 velocidad = 0
-g = 9.8  # Aceleración gravitacional
+g = 0  # Aceleración gravitacional
 tiAlturaMax = 0
 AltMaxima = 0
 tiempo_total = 0
 
 # Cuadro de texto interactivo para ingresar la velocidad
-input_rect = pygame.Rect(200, 50, 150, 30)
-input_text = ""
+input_rect = pygame.Rect(0, 100, 150, 30)
+input_text = "Ingrese velocidad: "
 input_active = False
 
-# Fuente de texto
+input_rect2 = pygame.Rect(0, 30, 163, 30)
+input_text2 = "ingrese la gravedad: "
+input_active2 = False
+
+# Tamaño el cual se les denomina a las letras 
 font = pygame.font.SysFont(None, 24)
 
 # Función para verificar si se hizo clic en un botón
@@ -90,36 +105,29 @@ def Pinta_Datos(velocidad):
 
 # Función para dibujar la gráfica del lanzamiento vertical
 def Pinta_Grafica():
+    global points
+    points = []
     graph_x = 700  # Posición X de la gráfica
     graph_y = 100  # Posición Y de la gráfica
     graph_width = 250  # Ancho de la gráfica
     graph_height = 200  # Altura de la gráfica
+    altura = 20
 
-    # Dibujar el marco de la gráfica
-    pygame.draw.rect(window, WHITE, (graph_x, graph_y, graph_width, graph_height), 2)
-
-    # Dibujar el eje X
-    pygame.draw.line(window, WHITE, (graph_x, graph_y + graph_height), (graph_x + graph_width, graph_y + graph_height), 2)
-
-    # Dibujar el eje Y
-    pygame.draw.line(window, WHITE, (graph_x, graph_y), (graph_x, graph_y + graph_height), 2)
 
     # Calcular las coordenadas de los puntos en la gráfica
     if tiempo_total != 0:
 
         t = 0
         x = graph_x
-        y = graph_y + graph_height - int((0.5 * g * (t ** 2)) / 2)  # Calcular la posición Y de la pelota en el tiempo t
+        y = graph_y + graph_height - int(altura * t - 0.5 * g * (t ** 2))  # Calcular la posición Y de la pelota en el tiempo t
         points = [(x, y)]
 
         while t <= tiempo_total:
             x = graph_x + int((graph_width / tiempo_total) * t)
-            y = graph_y + graph_height - int(ball_speed * t - 0.5 * g * (t ** 2))
+            y = graph_y + graph_height + int(ball_speed * t - 0.5 * g * (t**2))
             points.append((x, y))
             t += 0.1
 
-        # Dibujar la curva del lanzamiento vertical
-        pygame.draw.lines(window, GREEN, False, points, 2)
 
 # Bucle principal de Pygame
 running = True
@@ -135,7 +143,7 @@ while running:
                 for i, color in enumerate(colores):
                     button_rect = pygame.Rect(button_x, button_y + i * (button_height + button_spacing), button_width, button_height)
                     if is_button_clicked(button_rect, mouse_pos):
-                        if i == 0:
+                        if i == 3:
                             paused = not paused
                         elif i == 4:
                             ball_x = initial_ball_x
@@ -145,13 +153,15 @@ while running:
                             t = 0
                             ti.sleep(1)
                         elif i == 2:
-                            ball_speed = 3
-                        elif i == 3:
-                            ball_speed = 1
+                            input_active3 = True
+                            input_text3 = ""
+                        elif i == 0:
+                            input_active2 = True
+                            input_text2 = ""
                         elif i == 1:  # Nuevo botón para activar el cuadro de texto
                             input_active = True
                             input_text = ""
-
+#----------------------------------------------------------------------------------------------------------------------------------------------
         elif event.type == pygame.KEYDOWN:
             if input_active:
                 if event.key == pygame.K_RETURN:  # Al presionar Enter, se ingresa la velocidad
@@ -166,19 +176,52 @@ while running:
                     input_text = input_text[:-1]
                 else:
                     input_text += event.unicode
+#---------------------------------------------------------------------------------------------------------------------------------------------                    
+            elif input_active2:
+                if event.key == pygame.K_RETURN:
+                    try:
+                        g = float(input_text2)
+                        input_active2 = False
+                    except ValueError:
+                        print("Ingrese caracter valido")
+                elif event.key == pygame.K_BACKSPACE:
+                    input_text2 = input_text2[:-1]
+                else:
+                    input_text2 += event.unicode
+#----------------------------------------------------------------------------------------------------------------------------------------------
+            elif input_active3:
+                if event.key == pygame.K_RETURN:
+                    try:
+                        altura = float(input_text2)
+                        input_active3 = False
+                    except ValueError:
+                        print("Ingrese caracter valido")
+                elif event.key == pygame.K_BACKSPACE:
+                    input_text3 = input_text3[:-1]
+                else:
+                    input_text3 += event.unicode
 
-    # Movimiento de la pelota
+# Movimiento de la pelota
     if not paused and velocidad != 0:
-        ball_y -= velocidad
-        velocidad -= g  # Agrega la gravedad al cambio de velocidad
+        ball_y = initial_ball_y - (velocidad * t - ((g * (t ** 2)) / 2))
+        t += 0.1
+        if ball_y > initial_ball_y:
+            ball_x = initial_ball_x
+            ball_y = initial_ball_y
+            ball_speed = 0
+            paused = False
+            t = 0
+            velocidad = 0
 
-        # Restringe la posición de la pelota dentro de los límites de la ventana
-        if ball_y > 380:
-            ball_y = 380
-            velocidad = 0
-        elif ball_y < 0:
-            ball_y = 0
-            velocidad = 0
+
+
+# Actualizar la gráfica
+            plt.plot(*zip(*points), 'bo-')
+            plt.xlabel("Tiempo (s)")
+            plt.ylabel("Altura (m)")
+            plt.title("Lanzamiento vertical hacia arriba")
+            plt.grid(True)
+            plt.show()
 
     # Dibujar el fondo en la ventana
     window.blit(background_image, (0, 0))
@@ -190,8 +233,8 @@ while running:
     window.blit(ball_image, (ball_x, ball_y))
 
     # Dibujar los botones en la ventana
-    colores = [RED, GREEN, BLUE, YELLOW, ORANGE]
-    button_names = ["Botón 1", "Velocidad", "Botón 3", "Botón 4", "Botón 5"]
+    colores = [BLACK, BLUE, BLACK, BLACK, BLACK]
+    button_names = ["Gravedad", "velocidad", "x", "x", "x"]
     for i, color in enumerate(colores):
         pygame.draw.rect(window, color, (button_x, button_y + i * (button_height + button_spacing), button_width, button_height))
         button_text = pygame.font.SysFont(None, 24).render(button_names[i], True, WHITE)
@@ -201,7 +244,16 @@ while running:
 
     # Dibujar la gráfica del lanzamiento vertical
     Pinta_Grafica()
+    for coord in coordenadas_list:
+        x = coord[0]
+        y = coord[1]
+        pygame.draw.circle(window, BLACK, (x, y), 2)
+        coord[1] += random.randint(1, 5)  # Mover hacia abajo de forma aleatoria
 
+        # Reaparecer los puntos en la parte superior cuando llegan al fondo
+        if coord[1] > 599:
+            coord[1] = random.randint(-599, -1)
+            coord[0] = random.randint(0, 999)
     # Mostrar los datos del lanzamiento vertical en pantalla
     datos = [
         f"Velocidad inicial: {velocidad} m/s",
@@ -214,7 +266,7 @@ while running:
     ]
     for i, text in enumerate(datos):
         text_surface = font.render(text, True, WHITE)
-        window.blit(text_surface, (700, 315 + i * 30))
+        window.blit(text_surface, (700, 195 + i * 50))
     for i, text in enumerate(texto_velocidad):
         text_surface = font.render(text, True, WHITE)
         window.blit(text_surface, (712, 59))
@@ -223,7 +275,17 @@ while running:
     pygame.draw.rect(window, WHITE, input_rect, 2)
     input_surface = font.render(input_text, True, WHITE)
     window.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
+    
+    pygame.draw.rect(window, WHITE, input_rect2, 2)
+    input_surface = font.render(input_text2, True, WHITE)
+    window.blit(input_surface, (input_rect2.x + 5, input_rect2.y + 5))
 
+    mouse_pos = pygame.mouse.get_pos()
+    x1 = mouse_pos[0]
+    y1 = mouse_pos[1]
+
+    pygame.draw.rect(window, RED, (x1, y1, 10, 10))
+    pygame.mouse.set_visible(0)
     # Actualizar la ventana
     pygame.display.update()
 

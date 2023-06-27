@@ -213,16 +213,15 @@ while running:
 
 # Movimiento de la pelota
     if not paused and velocidad != 0:
-        ball_y -= velocidad
-        velocidad -= g  # Agrega la gravedad al cambio de velocidad
-
-        # Restringe la posición de la pelota dentro de los límites de la ventana
-        if ball_y > 380:
-            ball_y = 380
-            velocidad = 0
-        elif ball_y < 0:
-            ball_y = 0
-            velocidad=0
+        ball_y = initial_ball_y - (velocidad * t - ((g * (t ** 2)) / 2))
+        t+=0.1  ########### Agregue que se actualizara el t en cada ciclo, la pelota no se movia debido 
+        if ball_y > initial_ball_y:
+            ball_x = initial_ball_x
+            ball_y = initial_ball_y
+            ball_speed = 0
+            paused = False
+            t = 0 #Reinicia t a 0
+            velocidad = 0 # La velocidad la vuelve a cero
     # Dibujar el fondo en la ventana para hacer el scrouling
     h_relativa = H % window.get_rect().width
     window.blit(background_image, (h_relativa - window.get_rect().width, 0))

@@ -8,11 +8,10 @@ points = []
 pygame.init()
 
 # Dimensiones de la ventana de Pygame
-pygame_width = 1002
-pygame_height = 529
+W,D = (1001, 599)
 
 # Crear la ventana de Pygame
-window = pygame.display.set_mode((pygame_width, pygame_height))
+window = pygame.display.set_mode((W,D))
 
 # Cargar la imagen de fondo
 background_image = pygame.image.load("pygame_imagen_fondo.png")
@@ -22,7 +21,7 @@ ball_image = pygame.image.load("balon1.png")
 
 # Cargar la imagen del trampolín
 trampolin_image = pygame.image.load("trampolin.png")
-
+H = 0
 
 # Obtener las dimensiones de la pelota
 ball_rect = ball_image.get_rect()
@@ -30,7 +29,8 @@ ball_rect = ball_image.get_rect()
 # Obtener las dimensiones del trampolín
 trampolin_rect = trampolin_image.get_rect()
 
-
+# cargar imagen del tema asignado
+tema_imagen = pygame.image.load("tema.jpg")
 
 coordenadas_list = []
 for i in range(60):
@@ -45,7 +45,7 @@ ball_y = initial_ball_y
 
 # Posición del trampolín debajo de la posición inicial de la pelota
 trampolin_x = 260
-trampolin_y = 435
+trampolin_y = 445
 
 # Definir velocidad de la pelota
 ball_speed = 0  # Inicialmente se establece en cero
@@ -226,13 +226,19 @@ while running:
 
     # Dibujar el fondo en la ventana
     window.blit(background_image, (0, 0))
-
+    #se inserta la imagen del tema asignado y se establecen sus cordenadas
+    window.blit(tema_imagen,(190,1))
+    # Dibujar el fondo en la ventana para hacer el scrouling
+    h_relativa = H % window.get_rect().width
+    window.blit(background_image, (h_relativa - window.get_rect().width, 0))
+    if h_relativa < W:
+        window.blit(background_image,(h_relativa, 0))
+    H -= 1
     # Dibujar el trampolín en la ventana
     window.blit(trampolin_image, (trampolin_x, trampolin_y))
 
     # Dibujar la pelota en la ventana
     window.blit(ball_image, (ball_x, ball_y))
-
     # Dibujar los botones en la ventana
     colores = [RED, BLUE, ORANGE, BLACK, BLACK]
     button_names = ["Gravedad", "velocidad", "aumenta vel", "dismiuye vel", "reset"]

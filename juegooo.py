@@ -226,8 +226,7 @@ while running:
 
     # Dibujar el fondo en la ventana
     window.blit(background_image, (0, 0))
-    #se inserta la imagen del tema asignado y se establecen sus cordenadas
-    window.blit(tema_imagen,(190,1))
+
     # Dibujar el fondo en la ventana para hacer el scrouling
     h_relativa = H % window.get_rect().width
     window.blit(background_image, (h_relativa - window.get_rect().width, 0))
@@ -236,7 +235,8 @@ while running:
     H -= 1
     # Dibujar el trampolín en la ventana
     window.blit(trampolin_image, (trampolin_x, trampolin_y))
-
+    #se inserta la imagen del tema asignado y se establecen sus cordenadas
+    window.blit(tema_imagen,(180,1))
     # Dibujar la pelota en la ventana
     window.blit(ball_image, (ball_x, ball_y))
     # Dibujar los botones en la ventana

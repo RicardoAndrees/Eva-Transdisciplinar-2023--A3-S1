@@ -1,6 +1,9 @@
 import pygame
 import time as ti
 import random
+import matplotlib.pyplot as plt
+import numpy as np
+points = []
 # Inicializar Pygame
 pygame.init()
 
@@ -13,13 +16,17 @@ window = pygame.display.set_mode((W,D))
 # Cargar la imagen de fondo
 background_image = pygame.image.load("pygame_imagen_fondo.png")
 
+# Crear una lista para almacenar las coordenadas de la trayectoria
+trayectoria_x = [0, 100]
+trayectoria_y = [0, 100]
+
+# cargar imagen del tema asignado
+
 # Cargar la imagen de la pelota
 ball_image = pygame.image.load("balon1.png")
 
 # Cargar la imagen del trampolín
 trampolin_image = pygame.image.load("trampolin.png")
-
-
 
 # Obtener las dimensiones de la pelota
 ball_rect = ball_image.get_rect()
@@ -28,24 +35,12 @@ ball_rect = ball_image.get_rect()
 trampolin_rect = trampolin_image.get_rect()
 H = 0
 
-# música de fondo
-
-pygame.mixer.music.load("musica.mp3")
-pygame.mixer.music.play(-1)
-
-# control volumen 
-
-sonido_arriba = pygame.image.load('volume_up.png')
-sonido_abajo = pygame.image.load('volume_down.png')
-sonido_mute = pygame.image.load('volume_muted.png')
-sonido_max = pygame.image.load('volume_max.png')
 #lista de los puntos aleatorios en el mapa
 coordenadas_list = []
 for i in range(60):
     x = random.randint(0, 999)
     y = random.randint(-599, -1)  # Iniciar puntos fuera de la pantalla en la parte superior
     coordenadas_list.append([x, y])
-
 
 # Posición inicial de la pelota
 initial_ball_x = 300
@@ -73,9 +68,10 @@ BLACK = (0,0,0)
 button_width = 100
 button_height = 50
 button_spacing = 10
-button_x = 175
+button_x = 40
 button_y = 100
 
+#direccion del balon
 ball_direction = "up"
 
 # Inicializar el reloj de Pygame
@@ -92,7 +88,7 @@ AltMaxima = 0
 tiempo_total = 0
 
 # Cuadro de texto interactivo para ingresar la velocidad
-input_rect = pygame.Rect(200, 50, 150, 30)
+input_rect = pygame.Rect(40, 50, 150, 30)
 input_text = "Ingrese velocidad: "
 input_active = False
 
@@ -111,12 +107,15 @@ def Pinta_Datos(velocidad):
     tiempo_total = 2 * tiAlturaMax  # Tiempo total de vuelo
 
 # Función para dibujar la gráfica del lanzamiento vertical
-def Pinta_Grafica():
-    graph_x = 700  # Posición X de la gráfica
-    graph_y = 100  # Posición Y de la gráfica
-    graph_width = 250  # Ancho de la gráfica
-    graph_height = 200  # Altura de la gráfica
 
+def Pinta_Grafica():
+    global points
+    points = []
+    graph_x = 650  # Posición X de la gráfica
+    graph_y = 100  # Posición Y de la gráfica
+    graph_width = 300  # Ancho de la gráfica
+    graph_height = 300  # Altura de la gráfica
+    
     # Dibujar el marco de la gráfica
     pygame.draw.rect(window, BLACK, (graph_x, graph_y, graph_width, graph_height), 5)
 
@@ -128,18 +127,16 @@ def Pinta_Grafica():
 
     # Calcular las coordenadas de los puntos en la gráfica
     if tiempo_total != 0:
-
         t = 0
         x = graph_x
         y = graph_y + graph_height - int((0.5 * g * (t ** 2)) / 2)  # Calcular la posición Y de la pelota en el tiempo t
         points = [(x, y)]
-
+        
         while t <= tiempo_total:
             x = graph_x + int((graph_width / tiempo_total) * t)
             y = graph_y + graph_height - int(ball_speed * t - 0.5 * g* (t**2))
             points.append((x, y))
             t += 0.1
-
         # Dibujar la curva del lanzamiento vertical
         pygame.draw.lines(window, WHITE, False, points, 5)
 
@@ -147,6 +144,7 @@ def Pinta_Grafica():
 running = True
 t = 0
 c = 0
+coordenadas_grafica = []
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -193,25 +191,38 @@ while running:
 # Movimiento de la pelota
     if not paused and velocidad != 0:
         ball_y = initial_ball_y - (velocidad * t - ((g * (t ** 2)) / 2))
-        t+=0.1  ########### Agregue que se actualizara el t en cada ciclo, la pelota no se movia debido 
+        t += 0.1
         if ball_y > initial_ball_y:
             ball_x = initial_ball_x
             ball_y = initial_ball_y
             ball_speed = 0
             paused = False
-            t = 0 #Reinicia t a 0
-            velocidad = 0 # La velocidad la vuelve a cero
-    # Dibujar el fondo en la ventana para hacer el scrouling
+            t = 0
+            velocidad = 0
+
+            # Agregar las coordenadas de la trayectoria a la lista
+            coordenadas_grafica.append((trayectoria_x[0], trayectoria_y[0]))
+            coordenadas_grafica.append((trayectoria_x[1], trayectoria_y[1]))
+
+            # Actualizar la gráfica
+            plt.plot(*zip(*points), 'bo-')
+            plt.xlabel("Tiempo (s)")
+            plt.ylabel("Altura (m)")
+            plt.title("Lanzamiento vertical hacia arriba")
+            plt.grid(True)
+            plt.show()
+# Dibujar el fondo en la ventana para hacer el scrouling
     h_relativa = H % window.get_rect().width
     window.blit(background_image, (h_relativa - window.get_rect().width, 0))
     if h_relativa < W:
         window.blit(background_image,(h_relativa, 0))
     H -= 1
 
+
 # Dibujar el trampolín en la ventana
     window.blit(trampolin_image, (trampolin_x, trampolin_y))
 
- # Dibujar la pelota en la ventana
+# Dibujar la pelota en la ventana
     window.blit(ball_image, (ball_x, ball_y))
 
 # Dibujar los botones en la ventana
@@ -223,39 +234,6 @@ while running:
         text_x = button_x + (button_width - button_text.get_width()) // 2
         text_y = button_y + i * (button_height + button_spacing) + (button_height - button_text.get_height()) // 2
         window.blit(button_text, (text_x, text_y))
-
-
-
-# Control del audio
-    keys = pygame.key.get_pressed()
-
-# Bajar volumen
-
-    if keys[pygame.K_9] and pygame.mixer.music.get_volume() > 0.0:
-        pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() - 0.01)
-        window.blit(sonido_abajo, (550, 25))
-    elif keys[pygame.K_9] and pygame.mixer.music.get_volume() == 0.0:
-        window.blit(sonido_mute, (550, 25))
-
-# Subir volumen
-
-    if keys[pygame.K_0] and pygame.mixer.music.get_volume() < 1.0:
-        pygame.mixer.music.set_volume(pygame.mixer.music.get_volume() + 0.01)
-        window.blit(sonido_arriba, (550, 25))
-    elif keys[pygame.K_0] and pygame.mixer.music.get_volume() == 1.0:
-        window.blit(sonido_max, (850, 25))
-
-# Desactivar sonido
-
-    elif keys[pygame.K_m]:
-        pygame.mixer.music.set_volume(0.0)
-        window.blit(sonido_mute, (550, 25))
-
-# Reactivar sonido
-
-    elif keys[pygame.K_COMMA]:
-        pygame.mixer.music.set_volume(1.0)
-        window.blit(sonido_max, (550, 25))
 
 
     
@@ -273,7 +251,7 @@ while running:
     ]
     for i, text in enumerate(datos):
         text_surface = font.render(text, True, WHITE)
-        window.blit(text_surface, (700, 315 + i * 30))
+        window.blit(text_surface, (650, 425 + i * 30))
     for i, text in enumerate(texto_velocidad):
         text_surface = font.render(text, True, WHITE)
         window.blit(text_surface, (712, 59))
@@ -295,26 +273,21 @@ while running:
             coord[1] = random.randint(-599, -1)
             coord[0] = random.randint(0, 999)
 
-#posiciones del maus
-
+#posiciones del mause
     mouse_pos = pygame.mouse.get_pos()
     x1 = mouse_pos[0]
     y1 = mouse_pos[1]
 
 #diseño del mause
-
     pygame.draw.rect(window, WHITE, (x1, y1, 10, 10))
 
 #define si el raton es visible o no
-
     pygame.mouse.set_visible(0)
 
 # Actualizar la ventana
-
     pygame.display.update()
 
 # Limitar la velocidad de fotogramas
     clock.tick(120)
-
 
 pygame.quit()

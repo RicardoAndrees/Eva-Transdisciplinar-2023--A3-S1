@@ -98,6 +98,12 @@ input_rect = pygame.Rect(200, 50, 150, 30)
 input_text = "Ingrese velocidad: "
 input_active = False
 
+# Cuadro de texto interactivo 2
+input_rect2 = pygame.Rect(410, 50, 150, 30)
+input_text2 = "TEXTO_T: "
+input_active2 = False
+
+
 # Fuente de texto
 font = pygame.font.SysFont(None, 24)
 
@@ -171,7 +177,8 @@ while running:
                         elif i == 2:
                             ball_speed = 3
                         elif i == 3:
-                            ball_speed = 1
+                            input_active2 = True
+                            input_text2 = ""
                         elif i == 1:  # Nuevo botón para activar el cuadro de texto
                             input_active = True
                             input_text = ""
@@ -190,6 +197,18 @@ while running:
                     input_text = input_text[:-1]
                 else:
                     input_text += event.unicode
+            elif input_active2:
+                if event.key == pygame.K_RETURN:
+                    try:
+                        TEXTO_F = float(input_text2)
+                        input_active2 = False
+                    except ValueError:
+                        print("Ingrese caracter valido")
+                elif event.key == pygame.K_BACKSPACE:
+                    input_text2 = input_text2[:-1]
+                else:
+                    input_text2 += event.unicode
+
 
 
 # Movimiento de la pelota
@@ -274,7 +293,7 @@ while running:
     ]
     for i, text in enumerate(datos):
         text_surface = font.render(text, True, WHITE)
-        window.blit(text_surface, (700, 315 + i * 30))
+        window.blit(text_surface, (650, 415 + i * 30))
     for i, text in enumerate(texto_velocidad):
         text_surface = font.render(text, True, WHITE)
         window.blit(text_surface, (712, 59))
@@ -283,6 +302,11 @@ while running:
     pygame.draw.rect(window, WHITE, input_rect, 2)
     input_surface = font.render(input_text, True, WHITE)
     window.blit(input_surface, (input_rect.x + 5, input_rect.y + 5))
+
+    # Dibujar el cuadro de texto interactivo 2
+    pygame.draw.rect(window, WHITE, input_rect2, 2)
+    input_surface = font.render(input_text2, True, WHITE)
+    window.blit(input_surface, (input_rect2.x + 40, input_rect2.y + 8))
 
 #pinta puntos de manera aleatoria en el programa en forma de cascada
     for coord in coordenadas_list:

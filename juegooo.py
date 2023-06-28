@@ -234,7 +234,7 @@ while running:
 
     # Dibujar los botones en la ventana
     colores = [BLACK, BLUE, BLACK, BLACK, BLACK]
-    button_names = ["Gravedad", "velocidad", "x", "x", "x"]
+    button_names = ["Gravedad", "Velocidad", "", "", "Reset"]
     for i, color in enumerate(colores):
         pygame.draw.rect(window, color, (button_x, button_y + i * (button_height + button_spacing), button_width, button_height))
         button_text = pygame.font.SysFont(None, 24).render(button_names[i], True, WHITE)

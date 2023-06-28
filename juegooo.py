@@ -12,7 +12,7 @@ pygame_width = 1002
 pygame_height = 529
 
 # Crear la ventana de Pygame
-window = pygame.display.set_mode((pygame_width, pygame_height))
+window = pygame.display.set_mode((W,D))
 
 # Cargar la imagen de fondo
 background_image = pygame.image.load("pygame_imagen_fondo.png")
@@ -22,6 +22,7 @@ ball_image = pygame.image.load("pelota.png")
 
 # Cargar la imagen del trampolín
 trampolin_image = pygame.image.load("trampolin.png")
+H = 0
 
 # Obtener las dimensiones de la pelota
 ball_rect = ball_image.get_rect()
@@ -29,6 +30,8 @@ ball_rect = ball_image.get_rect()
 # Obtener las dimensiones del trampolín
 trampolin_rect = trampolin_image.get_rect()
 
+# cargar imagen del tema asignado
+tema_imagen = pygame.image.load("tema.jpg")
 
 coordenadas_list = []
 for i in range(60):
@@ -43,7 +46,7 @@ ball_y = initial_ball_y
 
 # Posición del trampolín debajo de la posición inicial de la pelota
 trampolin_x = 260
-trampolin_y = 435
+trampolin_y = 445
 
 # Definir velocidad de la pelota
 ball_speed = 0  # Inicialmente se establece en cero
@@ -56,10 +59,11 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
 BLACK = (0,0,0)
+BLACK = (0,0,0)
 
 # Definir dimensiones y posición de los botones
 button_width = 100
-button_height = 20
+button_height = 25
 button_spacing = 50
 button_x = 0
 button_y = 0
@@ -80,11 +84,11 @@ AltMaxima = 0
 tiempo_total = 0
 
 # Cuadro de texto interactivo para ingresar la velocidad
-input_rect = pygame.Rect(0, 100, 150, 30)
+input_rect = pygame.Rect(0, 120, 150, 30)
 input_text = "Ingrese velocidad: "
 input_active = False
 
-input_rect2 = pygame.Rect(0, 30, 163, 30)
+input_rect2 = pygame.Rect(0, 40, 163, 30)
 input_text2 = "ingrese la gravedad: "
 input_active2 = False
 
@@ -225,15 +229,21 @@ while running:
     # Dibujar el fondo en la ventana
     window.blit(background_image, (0, 0))
 
+    # Dibujar el fondo en la ventana para hacer el scrouling
+    h_relativa = H % window.get_rect().width
+    window.blit(background_image, (h_relativa - window.get_rect().width, 0))
+    if h_relativa < W:
+        window.blit(background_image,(h_relativa, 0))
+    H -= 1
     # Dibujar el trampolín en la ventana
     window.blit(trampolin_image, (trampolin_x, trampolin_y))
-
+    #se inserta la imagen del tema asignado y se establecen sus cordenadas
+    window.blit(tema_imagen,(180,1))
     # Dibujar la pelota en la ventana
     window.blit(ball_image, (ball_x, ball_y))
-
     # Dibujar los botones en la ventana
-    colores = [BLACK, BLUE, BLACK, BLACK, BLACK]
-    button_names = ["Gravedad", "Velocidad", "x", "x", "Reset"]
+    colores = [RED, BLUE, ORANGE, BLACK, BLACK]
+    button_names = ["Gravedad", "velocidad", "aumenta vel", "dismiuye vel", "reset"]
     for i, color in enumerate(colores):
         pygame.draw.rect(window, color, (button_x, button_y + i * (button_height + button_spacing), button_width, button_height))
         button_text = pygame.font.SysFont(None, 24).render(button_names[i], True, WHITE)
@@ -289,7 +299,7 @@ while running:
     pygame.display.update()
 
     # Limitar la velocidad de fotogramas
-    clock.tick(60)
+    clock.tick(120)
     if c % 100000 == 0:
         t += 1
     c += 1

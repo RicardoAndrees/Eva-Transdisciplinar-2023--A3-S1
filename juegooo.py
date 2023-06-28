@@ -14,7 +14,10 @@ W,D = (1001, 599)
 window = pygame.display.set_mode((W,D))
 
 # Cargar la imagen de fondo
-background_image = pygame.image.load("pygame_imagen_fondo.png")
+background_image = pygame.image.load("fondo.png")
+
+# cargar imagen del tema asignado
+tema_imagen = pygame.image.load("tema.png")
 
 # Cargar la imagen de la pelota
 ball_image = pygame.image.load("balon1.png")
@@ -58,6 +61,7 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 ORANGE = (255, 165, 0)
 BLACK = (0,0,0)
+BLACK = (0,0,0)
 
 # Definir dimensiones y posición de los botones
 button_width = 100
@@ -66,7 +70,9 @@ button_spacing = 50
 button_x = 0
 button_y = 0
 
+#direccion del balon
 ball_direction = "up"
+
 
 # Inicializar el reloj de Pygame
 clock = pygame.time.Clock()

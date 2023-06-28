@@ -14,7 +14,7 @@ W,D = (1001, 599)
 window = pygame.display.set_mode((W,D))
 
 # Cargar la imagen de fondo
-background_image = pygame.image.load("fondo.png")
+background_image = pygame.image.load("pygame_imagen_fondo.png")
 
 # cargar imagen del tema asignado
 tema_imagen = pygame.image.load("tema.png")
@@ -33,7 +33,7 @@ ball_rect = ball_image.get_rect()
 trampolin_rect = trampolin_image.get_rect()
 
 # cargar imagen del tema asignado
-tema_imagen = pygame.image.load("tema.jpg")
+tema_imagen = pygame.image.load("tema.png")
 
 coordenadas_list = []
 for i in range(60):

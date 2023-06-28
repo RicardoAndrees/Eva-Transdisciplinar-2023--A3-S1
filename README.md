@@ -55,7 +55,6 @@ Aqui van las conclusiones.
 
 
 
-### Enlace video 1ra entrega.
-https://drive.google.com/drive/folders/1vqL16PJjxLQJ9CcsJ9HFA57b31hMrEqx?usp=sharing
+### Enlace videos 1ra entrega y entrega final.
+https://drive.google.com/drive/folders/1vqL16PJjxLQJ9CcsJ9HFA57b31hMrEqx
 
-### Enlace video entrega final.

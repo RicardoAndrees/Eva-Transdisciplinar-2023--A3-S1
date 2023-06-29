@@ -49,8 +49,9 @@ El programa consta de una función para la musica el uso de este elemento es bas
 tiene asignado 4 teclas para subir, bajar, reanudar o detener la música, para bajar el volumen de la música se utiliza el **numero “9”**, para subir el volumen de la música se utiliza el **numero “0”**, para detener la música de utiliza la letra **“m”** y para reanudar la música se utiliza la **“,/coma”.**
 gravedades dependiendo del planeta, todos en m/s^2: Luna 1.6, Mercurio 2.8, Venus 8.9, **Tierra 9.8** ,Marte 3.7, Júpiter 22.9 Saturno 9.1, Urano 7.8, Neptuno 11,15.
 
-# Conclusiones
-Aqui van las conclusiones.
+# Conclusion.
+Para finalizar este código muestra cómo se puede utilizar Pygame para crear animaciones tales que sean se forma interactivas y cómo se pueden incorporar imágenes y gráficos en la ventana de visualización. También demuestra cómo se pueden utilizar elementos interactivos como botones y cuadros de texto para permitir la interacción del usuario. Además, muestra cómo se pueden realizar cálculos y representar gráficas utilizando las bibliotecas Matplotlib y NumPy.
+El código representa el movimiento físico del lanzamiento vertical hacia arriba. En este caso, se simula el lanzamiento de una pelota de basquetbol hacia arriba y su posterior caída debido a la gravedad.
 
 
 
